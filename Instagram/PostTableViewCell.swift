@@ -13,8 +13,10 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postImageView: UIImageView!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var likeLabel: UILabel!
+    @IBOutlet weak var commentButton: UIButton!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var captionLabel: UILabel!
+    @IBOutlet weak var commentLabel: UILabel!
 
     // PostDataの内容をセルに表示
     func setPostData(_ postData: PostData) {
@@ -40,6 +42,15 @@ class PostTableViewCell: UITableViewCell {
         } else {
             let buttonImage = UIImage(named: "like_none")
             self.likeButton.setImage(buttonImage, for: .normal)
+        }
+
+        // コメントの表示
+        if postData.comments.count > 0 {
+            var comment = ""
+            postData.comments.forEach {
+                comment.append("\($0)\n")
+            }
+            self.commentLabel.text = comment
         }
     }
     

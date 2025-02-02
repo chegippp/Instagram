@@ -70,13 +70,16 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! PostTableViewCell
         cell.setPostData(postArray[indexPath.row])
 
-        // セル内のボタンのアクションをソースコードで設定する
+        // likeボタンのアクションをソースコードで設定する
         cell.likeButton.addTarget(self, action:#selector(handleLikeButton(_:)), for: .touchUpInside)
+
+        // コメントボタンのアクションをソースコードで設定する
+        cell.commentButton.addTarget(self, action:#selector(handleCommentButton(_:)), for: .touchUpInside)
 
         return cell
     }
 
-    // セル内のボタンがタップされた時に呼ばれるメソッド
+    // likeボタンがタップされた時に呼ばれるメソッド
     @objc func handleLikeButton(_ sender: UIButton) {
         print("DEBUG_PRINT: likeボタンがタップされました。")
 
@@ -102,5 +105,19 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let postRef = Firestore.firestore().collection(Const.PostPath).document(postData.id)
             postRef.updateData(["likes": updateValue])
         }
+    }
+
+    // コメントボタンがタップされた時に呼ばれるメソッド
+    @objc func handleCommentButton(_ sender: UIButton) {
+        print("DEBUG_PRINT: コメントボタンがタップされました。")
+
+        let commentWriteViewController = storyboard!.instantiateViewController(withIdentifier: "CommentWrite") as! CommentWriteViewController
+
+        // タップされたセルのインデックスを求める
+        let point = sender.convert(CGPoint.zero, to: tableView)
+        let indexPath = tableView.indexPathForRow(at: point)
+        commentWriteViewController.postData = postArray[indexPath!.row]
+
+        present(commentWriteViewController, animated: true)
     }
 }
