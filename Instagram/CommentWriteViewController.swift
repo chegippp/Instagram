@@ -25,10 +25,11 @@ class CommentWriteViewController: UIViewController {
         let user = Auth.auth().currentUser
         let userName: String = user!.displayName! as String
         let commentData = "\(userName) : \(commentField.text!)"
-        postData.comments.append(commentData)
+
         // commentsに更新データを書き込む
+        let updateValue = FieldValue.arrayUnion([commentData])
         let postRef = Firestore.firestore().collection(Const.PostPath).document(postData.id)
-        postRef.updateData(["comments": postData.comments])
+        postRef.updateData(["comments": updateValue])
 
         // 先頭画面に戻る
         self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)

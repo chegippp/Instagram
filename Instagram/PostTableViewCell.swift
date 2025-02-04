@@ -45,13 +45,11 @@ class PostTableViewCell: UITableViewCell {
         }
 
         // コメントの表示
-        if postData.comments.count > 0 {
-            var comment = ""
-            postData.comments.forEach {
-                comment.append("\($0)\n")
-            }
-            self.commentLabel.text = comment
+        var comment = ""
+        postData.comments.forEach {
+            comment.append("\($0)\n")
         }
+        self.commentLabel.text = comment
     }
     
 }
